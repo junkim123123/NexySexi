@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "This file contains manually researched factory vetting hints for different product categories. During alpha, we maintain these as versioned JSON files. Each entry should be researched using external tools (Perplexity, GPT, etc.) and follow the same structure. Rename this file to category_vetting.json after adding your first real entries.",
+  "categories": [
+    {
+      "id": "baby_teether",
+      "label": "Baby Teether / Infant Teething Toys",
+      "typicalSupplierTypes": [
+        "OEM (Original Equipment Manufacturer)",
+        "ODM (Original Design Manufacturer) with toy safety expertise",
+        "Specialized silicone/rubber molding factories"
+      ],
+      "mustHaveCertificates": [
+        "ISO 9001 (Quality Management)",
+        "BSCI or SA8000 (Social Compliance)",
+        "CPSIA Testing Lab Certificate",
+        "FDA Registration (if using food-grade materials)"
+      ],
+      "niceToHaveCertificates": [
+        "ISO 14001 (Environmental Management)",
+        "GOTS (if using organic materials)",
+        "OEKO-TEX (for textile components)",
+        "SEDEX/SMETA Audit"
+      ],
+      "sampleQuestionsToFactory": [
+        "Do you have CPSIA-compliant testing documentation from a CPSC-accepted lab?",
+        "What grade of silicone do you use? Can you provide a certificate of analysis (COA)?",
+        "Have you manufactured baby products before? Can you share case studies or references?",
+        "What is your process for ensuring no small parts break off during testing?",
+        "Do you have a quality control process for phthalates and heavy metals?",
+        "Can you provide a sample and full testing report before production?"
+      ],
+      "commonRedFlags": [
+        "Factory cannot provide recent third-party test reports",
+        "Factory has never manufactured children's products before",
+        "Unusually low pricing (may indicate cutting corners on materials)",
+        "Cannot provide material certificates or COAs",
+        "No understanding of CPSIA requirements",
+        "Factory refuses to sign a quality agreement or warranty",
+        "No clear process for handling product recalls"
+      ],
+      "recommendedAlibabaFilters": [
+        "Trade Assurance verified",
+        "Gold Supplier (3+ years)",
+        "Response time: < 24 hours",
+        "Factory location: Guangdong, Zhejiang (have more experience with export regulations)",
+        "Certifications: ISO 9001, BSCI",
+        "Product categories: Baby Products, Toys"
+      ]
+    },
+    {
+      "id": "stainless_steel_tumbler",
+      "label": "Stainless Steel Tumbler / Water Bottle",
+      "typicalSupplierTypes": [
+        "OEM specializing in metal fabrication",
+        "ODM with experience in food-grade products",
+        "Factories with vacuum flask manufacturing capability"
+      ],
+      "mustHaveCertificates": [
+        "ISO 9001 (Quality Management)",
+        "Food Contact Material Certification",
+        "FDA Registration (if claiming FDA compliance)",
+        "BSCI or equivalent social compliance audit"
+      ],
+      "niceToHaveCertificates": [
+        "ISO 14001 (Environmental Management)",
+        "SEDEX/SMETA Audit",
+        "WRAP Certification",
+        "BSCI Grade A or B"
+      ],
+      "sampleQuestionsToFactory": [
+        "What grade of stainless steel do you use? Can you provide a material certificate?",
+        "Do you have FDA food contact testing documentation?",
+        "Can you provide a sample with your logo and test it for lead/cadmium migration?",
+        "What is your minimum order quantity (MOQ) and lead time?",
+        "Do you have experience exporting to [target market]? Any compliance issues in the past?",
+        "Can you provide references from other brands you've worked with?",
+        "What is your process for ensuring vacuum seal integrity?"
+      ],
+      "commonRedFlags": [
+        "Cannot specify stainless steel grade (should be 304 or 316)",
+        "No food contact material certification",
+        "Unusually cheap pricing (may indicate lower-grade materials)",
+        "Factory cannot provide material certificates",
+        "No experience with food-grade products",
+        "Cannot provide leak-proof or vacuum seal testing reports",
+        "No clear process for handling defects or returns"
+      ],
+      "recommendedAlibabaFilters": [
+        "Trade Assurance verified",
+        "Gold Supplier (2+ years)",
+        "Response time: < 24 hours",
+        "Factory location: Guangdong, Zhejiang",
+        "Certifications: ISO 9001, BSCI",
+        "Product categories: Kitchen, Dining & Bar, Vacuum Flasks & Thermoses"
+      ]
+    },
+    {
+      "id": "us_baby_teether_toy",
+      "label": "Silicone Baby Teether Toy",
+      "typicalSupplierTypes": [
+        "ODM (Original Design Manufacturer): Factories offering pre-designed teethers that can be private labeled.",
+        "OEM (Original Equipment Manufacturer): Factories that produce custom designs based on a buyer's specifications.",
+        "Specialized Silicone Molding Factory: A factory focused exclusively on food-grade and medical-grade silicone products."
+      ],
+      "mustHaveCertificates": [
+        "ISO 9001:2015: Certification for a quality management system.",
+        "Recent CPSC-Accepted Lab Test Reports: Verifiable ASTM F963-17 and CPSIA test reports for the specific product or a highly similar one, dated within the last 12-24 months.",
+        "Raw Material Documentation: Specification sheets and compliance certificates for the silicone raw material, confirming it meets FDA 21 CFR 177.2600."
+      ],
+      "niceToHaveCertificates": [
+        "BSCI (Business Social Compliance Initiative) Audit Report: Demonstrates ethical social practices.",
+        "SMETA (Sedex Members Ethical Trade Audit) Report: Another leading social compliance audit.",
+        "ISO 13485 (Medical Devices): Indicates a high level of quality control and cleanliness.",
+        "GMP (Good Manufacturing Practice) Certification: Ensures production is in a hygienic and controlled environment."
+      ],
+      "sampleQuestionsToFactory": [
+        "Can you provide the full, unredacted ASTM F963-17 and CPSIA test report for this exact model from a CPSC-accepted lab? What is the date of the report?",
+        "What is the specific brand and grade of silicone rubber you use? Can you provide the raw material data sheet and its FDA 21 CFR 177.2600 compliance documentation?",
+        "What is your on-line quality control process to check for and remove items with molding defects like sharp flashing before they are packaged?",
+        "Do you use a metal detector on the production line to prevent foreign body contamination in the final product?",
+        "How do you apply the permanent CPSIA tracking information? Is it molded, engraved, or printed on the product itself?"
+      ],
+      "commonRedFlags": [
+        "Refusal or hesitation to provide complete, recent test reports from a reputable, CPSC-accepted lab.",
+        "Price is significantly lower than quotes from other specialized silicone factories, suggesting material or quality compromises.",
+        "The supplier is a general trading company with no specialization in baby products or silicone manufacturing.",
+        "Vague answers regarding material composition, such as '100% safe silicone' without providing technical data sheets.",
+        "Supplier's main product catalog does not feature baby products or other silicone items."
+      ],
+      "recommendedAlibabaFilters": [
+        "Supplier Type: Verified Supplier",
+        "Management Certification: ISO 9001, BSCI",
+        "Product Certification: Search within supplier's profile for evidence of FDA, ASTM.",
+        "Minimum 3-5 Years of Experience as a supplier on the platform.",
+        "Review Main Products: Ensure their primary category is 'Mother, Kids & Toys' or that they have a deep catalog of silicone products."
+      ]
+    }
+  ]
+}

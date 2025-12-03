@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "This file contains manually researched category compliance rules. During alpha, we maintain these as versioned JSON files. Each entry should be researched using external tools (Perplexity, GPT, etc.) and follow the same structure. Rename this file to category_rules.json after adding your first real entries.",
+  "categories": [
+    {
+      "id": "baby_teether",
+      "label": "Baby Teether / Infant Teething Toys",
+      "exampleProducts": [
+        "silicone baby teether",
+        "infant teething ring",
+        "baby teething toy with rattle"
+      ],
+      "targetMarkets": [
+        "United States",
+        "European Union",
+        "Canada",
+        "Australia"
+      ],
+      "typicalHtsCodes": [
+        "9503.00.00",
+        "3924.10.00",
+        "4014.90.50"
+      ],
+      "requiredRegulations": [
+        "CPSIA (Consumer Product Safety Improvement Act)",
+        "ASTM F963 (Toy Safety Standard)",
+        "16 CFR Part 1303 (Lead Content)",
+        "CA Prop 65 (if selling to California)"
+      ],
+      "testingRequirements": [
+        "Third-party lab testing for CPSIA compliance required",
+        "Lead content must be below 100 ppm",
+        "Phthalates testing required (8 specific phthalates)",
+        "Small parts testing to ensure no choking hazards",
+        "Tensile strength testing for silicone products"
+      ],
+      "highRiskFlags": [
+        "Products for children under 3 years old are high-risk",
+        "Materials (silicone, rubber) must be food-grade",
+        "Colorants must be non-toxic and FDA-approved",
+        "No BPA, PVC, or phthalates allowed",
+        "Import holds are common if testing documentation is missing"
+      ],
+      "referenceLinks": [
+        "https://www.cpsc.gov/Business--Manufacturing/Business-Education/Baby-Products",
+        "https://www.cpsc.gov/Business--Manufacturing/Testing-Certification/Childrens-Products",
+        "https://www.astm.org/Standards/F963.htm"
+      ]
+    },
+    {
+      "id": "stainless_steel_tumbler",
+      "label": "Stainless Steel Tumbler / Water Bottle",
+      "exampleProducts": [
+        "stainless steel insulated water bottle",
+        "double-wall tumbler cup",
+        "stainless steel travel mug"
+      ],
+      "targetMarkets": [
+        "United States",
+        "European Union",
+        "Canada",
+        "United Kingdom"
+      ],
+      "typicalHtsCodes": [
+        "7323.93.00",
+        "9617.00.40",
+        "3926.90.99"
+      ],
+      "requiredRegulations": [
+        "FDA Food Contact Regulations (21 CFR)",
+        "California Prop 65 (if applicable)",
+        "EU REACH (if selling to EU)",
+        "LFGB (if selling to Germany)"
+      ],
+      "testingRequirements": [
+        "Food contact material testing (migration testing)",
+        "Stainless steel grade verification (should be 304 or 316)",
+        "Lead and cadmium content testing",
+        "Leak-proof testing for bottles with lids",
+        "Dishwasher safety testing (if claiming dishwasher safe)"
+      ],
+      "highRiskFlags": [
+        "Must use food-grade stainless steel (304 or 316)",
+        "Any coating or lining must be FDA-approved for food contact",
+        "Claims like 'BPA-free' require documentation",
+        "Custom logos/printing must use food-safe inks",
+        "Vacuum seal integrity is critical for insulation claims"
+      ],
+      "referenceLinks": [
+        "https://www.fda.gov/food/food-ingredients-packaging/food-contact-substances-fcs",
+        "https://www.fda.gov/food/food-ingredients-packaging/fda-regulation-food-contact-substances-how-determine-if-substance-food-contact-substance",
+        "https://oehha.ca.gov/proposition-65"
+      ]
+    },
+    {
+      "id": "us_baby_teether_toy",
+      "label": "Silicone Baby Teether Toy",
+      "exampleProducts": [
+        "Silicone Giraffe Teether",
+        "Baby Teething Tubes",
+        "Silicone Fruit Teether Set",
+        "Teething Mitten for Babies"
+      ],
+      "targetMarkets": [
+        "United States"
+      ],
+      "typicalHtsCodes": [
+        "9503.00.0090",
+        "3924.90.5650",
+        "3926.90.9985"
+      ],
+      "requiredRegulations": [
+        {
+          "name": "CPSIA - Total Lead in Substrate",
+          "details": "The total lead content in any accessible substrate material of a children's product must not exceed 100 parts per million (ppm).",
+          "citation": "CPSIA Section 101"
+        },
+        {
+          "name": "CPSIA - Phthalates",
+          "details": "Children's toys and child care articles must not contain more than 0.1% of eight specified phthalates (DEHP, DBP, BBP, DINP, DIBP, DPENP, DHEXP, DCHP).",
+          "citation": "16 CFR Part 1307"
+        },
+        {
+          "name": "CPSIA - Tracking Information",
+          "details": "Product and its packaging must have permanent, distinguishing marks indicating the manufacturer, production date, and cohort information (batch, lot).",
+          "citation": "CPSIA Section 103"
+        },
+        {
+          "name": "Children's Product Certificate (CPC)",
+          "details": "A statement of compliance, self-issued by the importer or domestic manufacturer, certifying that the product complies with all applicable U.S. children's product safety rules based on passing results from a CPSC-accepted third-party laboratory.",
+          "citation": "CPSIA Section 102"
+        },
+        {
+          "name": "Standard for Toy Safety",
+          "details": "Compliance with the mandatory safety standard for toys, which covers numerous hazards including mechanical (small parts, sharp points/edges) and chemical (heavy elements).",
+          "citation": "ASTM F963-17 (as mandated by 16 CFR Part 1250)"
+        },
+        {
+          "name": "Small Parts Regulation",
+          "details": "Prohibits small parts in toys and other articles intended for children under 3 years of age which present a choking, aspiration, or ingestion hazard.",
+          "citation": "16 CFR Part 1501"
+        },
+        {
+          "name": "Total Lead in Paint & Surface Coatings",
+          "details": "The lead content in paint or similar surface coatings on a children's product must not exceed 90 ppm.",
+          "citation": "16 CFR Part 1303"
+        },
+        {
+          "name": "FDA - Food Contact Material",
+          "details": "As teethers are intended for oral use, the silicone must comply with FDA regulations for 'Rubber articles intended for repeated use' to ensure no harmful substances migrate from the material.",
+          "citation": "21 CFR 177.2600"
+        },
+        {
+          "name": "California Proposition 65",
+          "details": "Requires businesses to provide warnings to Californians about significant exposures to chemicals that cause cancer, birth defects or other reproductive harm. Requires either testing for listed chemicals or applying a warning label.",
+          "citation": "California Health and Safety Code Section 25249.6"
+        }
+      ],
+      "testingRequirements": [
+        "Third-party testing at a CPSC-accepted laboratory is mandatory for children's products to support a Children's Product Certificate (CPC).",
+        "ASTM F963-17 Mechanical Hazards: Use and abuse testing (drop, torque, tension, compression), small parts testing (before and after abuse), sharp edges and points testing.",
+        "ASTM F963-17 Section 4.22 Teethers and Teething Toys: Specific tests for structural integrity, protrusions, and to ensure they do not break into hazardous small parts.",
+        "ASTM F963-17 Soluble Heavy Elements: Testing for the migration of 8 elements (Antimony, Arsenic, Barium, Cadmium, Chromium, Lead, Mercury, Selenium).",
+        "Total Lead Content in Substrate (CPSC-CH-E1002-08.3 for non-metals).",
+        "Phthalates Content (CPSC-CH-C1001-09.4).",
+        "FDA 21 CFR 177.2600 Extraction Testing: To ensure no harmful chemicals migrate from the silicone when in contact with solvents simulating saliva.",
+        "Age Grading Verification: The product must be appropriately age-graded (e.g., 3+ months) and tested according to the standards for that age group."
+      ],
+      "highRiskFlags": [
+        "Small Part Detachment: Components or pieces of the teether breaking off during use or testing, creating a choking hazard.",
+        "Material Non-Compliance: Use of industrial-grade or recycled silicone instead of 100% food-grade silicone, leading to chemical contamination.",
+        "Molding Defects: Sharp edges or points ('flashing') left over from the injection molding process that can cut a baby's mouth.",
+        "Incorrect or Forged Test Reports: Supplier provides a test report that is for a different product, is expired, or is from a non-CPSC-accepted lab.",
+        "Liquid-Filled Teether Failure: Risk of puncture, leakage, and bacterial contamination if the teether contains a liquid or gel component."
+      ],
+      "referenceLinks": [
+        "https://www.cpsc.gov/Business--Manufacturing/Business-Education/Toy-Safety",
+        "https://www.ecfr.gov/current/title-16/chapter-II/subchapter-B/part-1250",
+        "https://www.ecfr.gov/current/title-16/chapter-II/subchapter-C/part-1501",
+        "https://www.ecfr.gov/current/title-16/chapter-II/subchapter-B/part-1307",
+        "https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-177/subpart-C/section-177.2600",
+        "https://www.astm.org/f0963-17.html",
+        "https://oehha.ca.gov/proposition-65"
+      ]
+    }
+  ]
+}
