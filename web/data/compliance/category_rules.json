@@ -302,6 +302,109 @@
         "https://www.ecfr.gov/current/title-16/chapter-II/subchapter-C/part-1501",
         "https://oehha.ca.gov/proposition-65/proposition-65-list"
       ]
+    },
+    {
+      "id": "led_desk_lamp_with_usb_charging",
+      "label": "LED Desk Lamp with USB Charging Port",
+      "exampleProducts": [
+        "Dimmable LED Desk Lamp with USB Charging Port",
+        "Adjustable Gooseneck Office Table Lamp with USB",
+        "Foldable LED Desk Light with Wireless Charger and USB Port",
+        "Modern Eye-Caring Desk Lamp with USB"
+      ],
+      "targetMarkets": [
+        "United States"
+      ],
+      "typicalHtsCodes": [
+        "9405.21.40",
+        "9405.29.40"
+      ],
+      "requiredRegulations": [
+        {
+          "name": "Nationally Recognized Testing Laboratory (NRTL) Certification",
+          "details": "Required by OSHA for workplace safety and considered a de facto requirement for retail market access. The product must be certified by an NRTL (e.g., UL, ETL) to the relevant safety standard, primarily UL 153 for Portable Electric Luminaires.",
+          "authority": "OSHA"
+        },
+        {
+          "name": "Power Supply Certification",
+          "details": "The external power adapter or internal power supply must be NRTL certified, typically to UL 62368-1 (Audio/video, information and communication technology equipment) or UL 1310 (Class 2 Power Units).",
+          "authority": "OSHA / NRTL"
+        },
+        {
+          "name": "FCC Part 15B Supplier's Declaration of Conformity (SDoC)",
+          "details": "Applies to unintentional radiators. The lamp's internal electronics (power supply, dimmer) generate radio frequency energy and must not cause harmful interference. Products with wireless charging are intentional radiators and fall under stricter certification rules (e.g., FCC Part 15C or Part 18).",
+          "authority": "FCC"
+        },
+        {
+          "name": "General Certificate of Conformity (GCC)",
+          "details": "As a general use product subject to CPSC-enforced rules (e.g., 16 CFR Part 1303), the US-based importer must issue a GCC certifying compliance with all applicable consumer product safety rules.",
+          "authority": "CPSC"
+        },
+        {
+          "name": "16 CFR Part 1303 - Ban of Lead-Containing Paint and Certain Consumer Products Bearing Lead-Containing Paint",
+          "details": "Surface coatings on the product must not contain lead in excess of 90 parts per million (ppm).",
+          "authority": "CPSC"
+        },
+        {
+          "name": "California Proposition 65",
+          "details": "Requires a clear and reasonable warning if the product can expose consumers to chemicals on the Prop 65 list (e.g., lead, phthalates) above established safe harbor levels. This is a California state requirement.",
+          "authority": "California OEHHA"
+        },
+        {
+          "name": "Department of Energy (DOE) Level VI Energy Efficiency",
+          "details": "External power supplies (EPS) sold in the US must meet these mandatory minimum energy efficiency and no-load power consumption standards, as defined in 10 CFR 430.32.",
+          "authority": "DOE"
+        },
+        {
+          "name": "Toxics in Packaging Clearinghouse (TPCH)",
+          "details": "Regulates the sum concentration of four heavy metals (lead, mercury, cadmium, and hexavalent chromium) in product packaging and packaging components, which must not exceed 100 ppm. Enforced at the state level by 19 states.",
+          "authority": "State-level (via TPCH)"
+        }
+      ],
+      "testingRequirements": [
+        "NRTL Safety Testing (per UL 153): Includes construction review, stability test, strain relief test, temperature (heat rise) test, dielectric voltage-withstand test, and flammability testing of plastic components.",
+        "Power Supply Safety Testing (per UL 62368-1 or UL 1310): Evaluates the external power supply for electrical shock, fire, and energy hazards.",
+        "Electromagnetic Compatibility (EMC) Testing (per FCC Part 15B): Measures radiated and conducted emissions to ensure they are within the limits for a Class B digital device suitable for a residential environment.",
+        "Lead in Surface Coatings (per CPSC-CH-E1003-09.1): Laboratory testing to verify compliance with the 90 ppm limit under 16 CFR Part 1303.",
+        "California Proposition 65 Screening: Chemical analysis (e.g., using XRF screening and confirmatory wet chemistry) to identify the presence and concentration of listed chemicals to determine if a warning label is required.",
+        "Heavy Metals in Packaging: Testing to ensure packaging materials comply with TPCH requirements for the sum of four heavy metals to be under 100 ppm."
+      ],
+      "highRiskFlags": [
+        "Uncertified Power Supplies/Adapters: This is a leading cause of fires and electrical hazards. A common red flag is a supplier claiming the adapter is 'UL compliant' because it uses a UL-listed component, which is not the same as the entire power supply unit being certified.",
+        "Overheating and Fire Hazard: Poor thermal management, use of non-flame-retardant plastics (not rated V-0, V-1, or V-2), or inadequate wiring can lead to overheating and fire. This is a primary focus of UL 153 testing.",
+        "Counterfeit Certification Marks: Unauthorized use of UL, ETL, or FCC marks is common. Always verify certification numbers in the official NRTL or FCC databases.",
+        "Instability: Tall or top-heavy lamps can fail the 8-degree tilt stability test in UL 153, posing a tip-over hazard."
+      ],
+      "referenceLinks": [
+        {
+          "name": "CPSC General Certificate of Conformity (GCC)",
+          "url": "https://www.cpsc.gov/Business--Manufacturing/Business-Education/Business-Guidance/General-Certificate-of-Conformity-GCC"
+        },
+        {
+          "name": "16 CFR Part 1303 - Lead Paint Ban",
+          "url": "https://www.ecfr.gov/current/title-16/chapter-II/subchapter-B/part-1303"
+        },
+        {
+          "name": "FCC Supplier's Declaration of Conformity (SDoC)",
+          "url": "https://www.fcc.gov/oet/ea/sdoci"
+        },
+        {
+          "name": "California Proposition 65",
+          "url": "https://oehha.ca.gov/proposition-65"
+        },
+        {
+          "name": "OSHA Nationally Recognized Testing Laboratory (NRTL) Program",
+          "url": "https://www.osha.gov/nationally-recognized-testing-laboratory-program"
+        },
+        {
+          "name": "DOE Energy Efficiency for External Power Supplies",
+          "url": "https://www.ecfr.gov/current/title-10/part-430/subpart-C/section-430.32#p-430.32(w)(1)"
+        },
+        {
+          "name": "Toxics in Packaging Clearinghouse (TPCH)",
+          "url": "https://toxicsinpackaging.org/"
+        }
+      ]
     }
   ]
 }

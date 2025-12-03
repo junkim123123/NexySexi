@@ -256,6 +256,46 @@
         "Minimum 3-5 years of experience manufacturing this specific product category.",
         "Filter by suppliers who list 'BSCI' or 'ISO9001' in their company profile."
       ]
+    },
+    {
+      "id": "led_desk_lamp_with_usb_charging",
+      "label": "LED Desk Lamp with USB Charging Port",
+      "typicalSupplierTypes": [
+        "ODM (Original Design Manufacturer): Most common type. They offer pre-designed lamps that can be customized with branding and minor modifications.",
+        "Specialized LED Lighting Factories: Factories that focus exclusively on manufacturing various types of LED lights, possessing deep expertise in thermal management, optics, and power drivers.",
+        "OEM (Original Equipment Manufacturer): For buyers with unique, proprietary designs who require a factory to manufacture to their exact specifications."
+      ],
+      "mustHaveCertificates": [
+        "ISO 9001:2015: For a quality management system. This is a baseline requirement for process control and consistency.",
+        "Proof of previous NRTL Certifications (UL or ETL): The factory must provide evidence (e.g., valid certificate numbers, test reports for similar models) that they have successfully manufactured products certified for the US market.",
+        "Proof of previous FCC Compliance: The factory should have experience and be able to provide SDoC examples or test reports for similar electronic products."
+      ],
+      "niceToHaveCertificates": [
+        "BSCI (Business Social Compliance Initiative) Audit Report: Demonstrates adherence to social and ethical labor standards.",
+        "SMETA (Sedex Members Ethical Trade Audit) Report: Another widely recognized social compliance audit.",
+        "ISO 14001: Environmental Management System certification."
+      ],
+      "sampleQuestionsToFactory": [
+        "Can you provide the valid UL or ETL certificate number for this exact model or a similar model sold in the US? Please provide the link to the public certification directory.",
+        "What brand of LED chips and power driver do you use in this lamp? Can you provide their specification sheets?",
+        "Do you perform 100% production line testing, including a Hi-Pot (dielectric strength) test and an aging test for every unit? If so, for how long is the aging test?",
+        "Can you provide a Bill of Materials (BOM) that specifies the flammability rating (e.g., V-0) of all plastic components?",
+        "Are you able to provide a California Proposition 65 compliance statement or a full material declaration for this product?"
+      ],
+      "commonRedFlags": [
+        "Vague terminology like 'UL-compliant' or 'meets UL standards' instead of 'UL Listed' or 'UL Certified'. This often means the product is not actually certified.",
+        "Inability or unwillingness to provide a valid, verifiable NRTL certificate number for a similar product.",
+        "No experience exporting to North America. These suppliers are often unfamiliar with NRTL, FCC, and packaging requirements.",
+        "An unusually low price, which often indicates the use of low-quality, uncertified components (especially the power driver), or cutting corners on safety testing.",
+        "Lack of a robust quality control system (e.g., no incoming component inspection, no in-process Hi-Pot testing)."
+      ],
+      "recommendedAlibabaFilters": [
+        "Supplier Type: Verified Supplier",
+        "Product Certification: Search keywords within the product search bar like 'UL Listed desk lamp' or 'ETL certified desk lamp'. Do not rely on the filter checkboxes as they can be inaccurate.",
+        "Management Certification: ISO 9001",
+        "Supplier's Main Markets: North America",
+        "Feature: Trade Assurance"
+      ]
     }
   ]
 }
