@@ -1,0 +1,28 @@
+# Cursor Rules for NexSupply
+
+## Architecture Standards
+
+- pages/: UI layout only. No complex logic. Max 200 lines/file.
+
+- services/: All API calls (Gemini, Database).
+
+- components/: Reusable UI elements.
+
+- state/: Session state management.
+
+- utils/: Configuration and helpers.
+
+## Coding Standards
+
+- Secrets: Use utils.config.Config. Never hardcode keys.
+
+- Gemini: Use timeout=60.
+
+- UI: Use st.columns for layout, st.markdown for custom CSS.
+
+## Cursor Behavior
+
+- Always reference @file when editing.
+
+- Create __init__.py automatically in new folders.
+

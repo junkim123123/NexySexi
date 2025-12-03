@@ -1,0 +1,122 @@
+[
+  {
+    "id": "fba_7figure_emma",
+    "label": "FBA 7-figure Seller – Emma Lee",
+    "input": {
+      "name": "Emma Lee",
+      "email": "emma@brandops.co",
+      "company": "BrandOps Labs",
+      "use_case": "We manage multiple 7-figure ASINs and need help optimizing landed cost, HTS classification and Section 301 exposure across 3 FCL shipments per quarter."
+    },
+    "expectations": {
+      "minTier": "A",
+      "maxTier": "A",
+      "minScore": 80,
+      "maxScore": 100
+    }
+  },
+  {
+    "id": "serious_dtc_founder",
+    "label": "Serious DTC Brand – Founder",
+    "input": {
+      "name": "Alex Chen",
+      "email": "alex@modernskin.co",
+      "company": "ModernSkin",
+      "use_case": "Looking for OEM skincare manufacturing with CE/FDA compliance, MOQ 5,000 per SKU, and support for custom packaging for EU and US markets."
+    },
+    "expectations": {
+      "minTier": "A",
+      "maxTier": "B",
+      "minScore": 70
+    }
+  },
+  {
+    "id": "high_intent_gmail",
+    "label": "High-Intent Gmail – Daniel",
+    "input": {
+      "name": "Daniel Park",
+      "email": "daniel.park@gmail.com",
+      "company": "DP Commerce",
+      "use_case": "We are importing 2–3 FCLs of confectionery per year into the US and need help with landed cost breakdown, HTS codes, and Section 301 risk."
+    },
+    "expectations": {
+      "minTier": "B",
+      "maxTier": "A",
+      "minScore": 60
+    }
+  },
+  {
+    "id": "emotional_low_intent",
+    "label": "Emotional/Low Intent – King Amazon",
+    "input": {
+      "name": "King Amazon",
+      "email": "kingofamazon@gmail.com",
+      "company": "King Empire",
+      "use_case": "I want to dominate Amazon and prove all my haters wrong. Help me crush my competition and become the number one seller in the world."
+    },
+    "expectations": {
+      "minTier": "D",
+      "maxTier": "D",
+      "maxScore": 30
+    }
+  },
+  {
+    "id": "disposable_spam",
+    "label": "Disposable/Spam – Best Deal",
+    "input": {
+      "name": "Best Deals",
+      "email": "promo@guerrillamail.com",
+      "company": "Super Promo",
+      "use_case": "Send me cheapest price list for all products."
+    },
+    "expectations": {
+      "minTier": "D",
+      "maxTier": "D",
+      "maxScore": 25
+    }
+  },
+  {
+    "id": "student_research_mj",
+    "label": "Student Research – MJ Kim",
+    "input": {
+      "name": "MJ Kim",
+      "email": "myungjun.kim@wustl.edu",
+      "company": "Washington University in St. Louis",
+      "use_case": "I’m doing academic research on global sourcing and tariff risk for a class project. I don’t plan to place real orders right now."
+    },
+    "expectations": {
+      "minTier": "C",
+      "maxTier": "C",
+      "maxScore": 60
+    }
+  },
+  {
+    "id": "retail_chain_buyer",
+    "label": "Retail Chain Buyer – Midwest Grocers",
+    "input": {
+      "name": "Sarah Johnson",
+      "email": "sarah.johnson@midwestgrocers.com",
+      "company": "Midwest Grocers",
+      "use_case": "We’re evaluating Korean snack suppliers for a 150-store rollout in Q4, expecting initial PO volume of 2–3 containers and need landed cost scenarios and compliance review."
+    },
+    "expectations": {
+      "minTier": "A",
+      "maxTier": "A",
+      "minScore": 90
+    }
+  },
+  {
+    "id": "exploratory_brand",
+    "label": "Exploratory Brand – Early Stage",
+    "input": {
+      "name": "Lena Torres",
+      "email": "lena.brandstudio@gmail.com",
+      "company": "Lena Studio",
+      "use_case": "Exploring the idea of launching a small DTC brand with low MOQs and testing a few SKUs in cosmetics or snacks. Need guidance on feasibility and typical landed costs."
+    },
+    "expectations": {
+      "minTier": "B",
+      "maxTier": "C"
+    }
+  }
+]

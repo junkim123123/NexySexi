@@ -1,0 +1,222 @@
+warning: in the working copy of '.streamlit/config.toml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'build_twa.sh', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'create_icons.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'service-worker.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'static/manifest.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'vercel.json', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/BUILD_TWA.md b/BUILD_TWA.md[m
+[1mindex 0b52ee9..e33f4b1 100644[m
+[1m--- a/BUILD_TWA.md[m
+[1m+++ b/BUILD_TWA.md[m
+[36m@@ -172,3 +172,5 @@[m [mhttps://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=http[m
+ [m
+ 자세한 내용은 `TWA_GUIDE.md`를 참고하세요.[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/DAY1_EXECUTION_GUIDE.md b/DAY1_EXECUTION_GUIDE.md[m
+[1mindex 0135d37..51c1c4a 100644[m
+[1m--- a/DAY1_EXECUTION_GUIDE.md[m
+[1m+++ b/DAY1_EXECUTION_GUIDE.md[m
+[36m@@ -255,3 +255,5 @@[m [mstreamlit --version[m
+ [m
+ 이제 Day 2-3의 PWA 검증 단계로 진행할 수 있습니다.[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/GIT_PUSH_SOLUTION.md b/GIT_PUSH_SOLUTION.md[m
+[1mindex f954146..f59ac27 100644[m
+[1m--- a/GIT_PUSH_SOLUTION.md[m
+[1m+++ b/GIT_PUSH_SOLUTION.md[m
+[36m@@ -126,3 +126,5 @@[m [mcmdkey /delete:git:https://github.com[m
+ [m
+ **참고**: 로컬 커밋은 완료되었으므로, 인증 문제만 해결하면 푸시할 수 있습니다.[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/PWA_SETUP.md b/PWA_SETUP.md[m
+[1mindex b80ec2b..d6b6e3f 100644[m
+[1m--- a/PWA_SETUP.md[m
+[1m+++ b/PWA_SETUP.md[m
+[36m@@ -166,3 +166,5 @@[m [mstreamlit run streamlit_app.py[m
+ - [Web.dev: PWA](https://web.dev/progressive-web-apps/)[m
+ - [Google Play: PWA 배포 가이드](https://developer.chrome.com/docs/android/trusted-web-activity/)[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/QUICK_START.md b/QUICK_START.md[m
+[1mindex fc0cf00..f721972 100644[m
+[1m--- a/QUICK_START.md[m
+[1m+++ b/QUICK_START.md[m
+[36m@@ -99,3 +99,5 @@[m [mgit push[m
+ [m
+ 🎉 **지금 바로 시작하세요!**[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/SETUP_ASSETLINKS.md b/SETUP_ASSETLINKS.md[m
+[1mindex abfb6f3..80088ea 100644[m
+[1m--- a/SETUP_ASSETLINKS.md[m
+[1m+++ b/SETUP_ASSETLINKS.md[m
+[36m@@ -235,3 +235,5 @@[m [madb shell pm get-app-links com.nexsupply.app[m
+ [m
+ **다음 단계:** Day 4에서 Bubblewrap으로 TWA를 빌드한 후, 생성된 `assetlinks.json`을 이 저장소에 업데이트하세요.[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/STREAMLIT_CLOUD_TWA_SETUP.md b/STREAMLIT_CLOUD_TWA_SETUP.md[m
+[1mindex 200c25f..a43e368 100644[m
+[1m--- a/STREAMLIT_CLOUD_TWA_SETUP.md[m
+[1m+++ b/STREAMLIT_CLOUD_TWA_SETUP.md[m
+[36m@@ -273,3 +273,5 @@[m [mcp nexsupply-twa/assetlinks.json static/.well-known/[m
+ [m
+ **다음 단계:** Day 4에서 Bubblewrap으로 TWA를 빌드한 후, 생성된 `assetlinks.json` 파일을 Vercel에 배포하세요.[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/TWA_GUIDE.md b/TWA_GUIDE.md[m
+[1mindex 57ac5b2..b9564fb 100644[m
+[1m--- a/TWA_GUIDE.md[m
+[1m+++ b/TWA_GUIDE.md[m
+[36m@@ -225,3 +225,5 @@[m [mbubblewrap build[m
+ - [ ] Google Play Console에 앱 정보 입력[m
+ - [ ] App Bundle 업로드 및 제출[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/TWA_READ_ME.md b/TWA_READ_ME.md[m
+[1mindex 9434c8d..c86b96b 100644[m
+[1m--- a/TWA_READ_ME.md[m
+[1m+++ b/TWA_READ_ME.md[m
+[36m@@ -382,3 +382,5 @@[m [mNexSupply로 소싱 프로젝트당 $10K-100K를 절약하세요.[m
+ [m
+ 🎉 **축하합니다!** 이제 NexSupply를 Google Play Store에 출시할 준비가 완료되었습니다![m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/build_twa.ps1 b/build_twa.ps1[m
+[1mindex 520f401..c8caac2 100644[m
+[1m--- a/build_twa.ps1[m
+[1m+++ b/build_twa.ps1[m
+[36m@@ -77,3 +77,5 @@[m [mWrite-Host "   - $TWA_DIR/app-release-bundle.aab"[m
+ Write-Host ""[m
+ Write-Host "다음 단계: Google Play Console에 AAB 파일 업로드" -ForegroundColor Yellow[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/build_twa.sh b/build_twa.sh[m
+[1mindex 60e76db..4886301 100644[m
+[1m--- a/build_twa.sh[m
+[1m+++ b/build_twa.sh[m
+[36m@@ -79,3 +79,5 @@[m [mecho "   - $TWA_DIR/app-release-bundle.aab"[m
+ echo ""[m
+ echo "다음 단계: Google Play Console에 AAB 파일 업로드"[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/manifest.json b/manifest.json[m
+[1mindex 88c5c93..e862bbf 100644[m
+[1m--- a/manifest.json[m
+[1m+++ b/manifest.json[m
+[36m@@ -11,36 +11,22 @@[m
+   "categories": ["business", "productivity"],[m
+   "icons": [[m
+     {[m
+[31m-      "src": "https://app.nexsupply.app/icon-192.png",[m
+[32m+[m[32m      "src": "https://nexy-ai-app1-6sc6othrylf2nymoh474p8.streamlit.app/app/static/icons/icon-192.png",[m
+       "sizes": "192x192",[m
+       "type": "image/png",[m
+       "purpose": "any"[m
+     },[m
+     {[m
+[31m-      "src": "https://app.nexsupply.app/icon-512.png",[m
+[32m+[m[32m      "src": "https://nexy-ai-app1-6sc6othrylf2nymoh474p8.streamlit.app/app/static/icons/icon-512.png",[m
+       "sizes": "512x512",[m
+       "type": "image/png",[m
+       "purpose": "any"[m
+     },[m
+     {[m
+[31m-      "src": "https://app.nexsupply.app/icon-192-maskable.png",[m
+[32m+[m[32m      "src": "https://nexy-ai-app1-6sc6othrylf2nymoh474p8.streamlit.app/app/static/icons/icon-192.png",[m
+       "sizes": "192x192",[m
+       "type": "image/png",[m
+       "purpose": "maskable"[m
+     }[m
+[31m-  ],[m
+[31m-  "screenshots": [[m
+[31m-    {[m
+[31m-      "src": "https://app.nexsupply.app/screenshot-540.png",[m
+[31m-      "sizes": "540x720",[m
+[31m-      "type": "image/png",[m
+[31m-      "form_factor": "narrow"[m
+[31m-    },[m
+[31m-    {[m
+[31m-      "src": "https://app.nexsupply.app/screenshot-1080.png",[m
+[31m-      "sizes": "1080x1440",[m
+[31m-      "type": "image/png",[m
+[31m-      "form_factor": "narrow"[m
+[31m-    }[m
+   ][m
+ }[m
+[1mdiff --git a/nexsupply-mobile/.gitignore b/nexsupply-mobile/.gitignore[m
+[1mindex ba86fb1..e0f3605 100644[m
+[1m--- a/nexsupply-mobile/.gitignore[m
+[1m+++ b/nexsupply-mobile/.gitignore[m
+[36m@@ -22,3 +22,5 @@[m [mweb-build/[m
+ .vscode/[m
+ .idea/[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/nexsupply-mobile/App.tsx b/nexsupply-mobile/App.tsx[m
+[1mindex 2c55aa8..c16b625 100644[m
+[1m--- a/nexsupply-mobile/App.tsx[m
+[1m+++ b/nexsupply-mobile/App.tsx[m
+[36m@@ -11,3 +11,5 @@[m [mexport default function App() {[m
+   );[m
+ }[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/nexsupply-mobile/README.md b/nexsupply-mobile/README.md[m
+[1mindex bf47a73..905f286 100644[m
+[1m--- a/nexsupply-mobile/README.md[m
+[1m+++ b/nexsupply-mobile/README.md[m
+[36m@@ -56,3 +56,5 @@[m [mnexsupply-mobile/[m
+ [m
+ API 베이스 URL: `https://app.nexsupply.net`[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/nexsupply-mobile/app.json b/nexsupply-mobile/app.json[m
+[1mindex 65b13a5..d501ef6 100644[m
+[1m--- a/nexsupply-mobile/app.json[m
+[1m+++ b/nexsupply-mobile/app.json[m
+[36m@@ -32,3 +32,5 @@[m
+   }[m
+ }[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/nexsupply-mobile/navigation/AppNavigator.tsx b/nexsupply-mobile/navigation/AppNavigator.tsx[m
+[1mindex 7766841..9e8eece 100644[m
+[1m--- a/nexsupply-mobile/navigation/AppNavigator.tsx[m
+[1m+++ b/nexsupply-mobile/navigation/AppNavigator.tsx[m
+[36m@@ -48,3 +48,5 @@[m [mexport default function AppNavigator() {[m
+   );[m
+ }[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/nexsupply-mobile/package.json b/nexsupply-mobile/package.json[m
+[1mindex 5b0e22e..0c734b5 100644[m
+[1m--- a/nexsupply-mobile/package.json[m
+[1m+++ b/nexsupply-mobile/package.json[m
+[36m@@ -26,3 +26,5 @@[m
+   "private": true[m
+ }[m
+ [m
+[41m+[m
+[41m+[m
+[1mdiff --git a/nexsupply-mo

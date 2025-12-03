@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base Colors - HSL values for Tailwind variables */
+    --background: 0 0% 2%;    /* #050505 */
+    --foreground: 0 0% 100%;  /* #FFFFFF */
+
+    --card: 0 0% 4%;          /* #0A0A0A */
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 4%;       /* #0A0A0A */
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 183 100% 50%;  /* #00F0FF */
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 211 100% 50%; /* #007AFF */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 45 100% 50%;    /* #FFBF00 */
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --success: 155 100% 50%;  /* #00FF94 */
+    --success-foreground: 0 0% 0%;
+
+    --border: 0 0% 100%;      /* Used with opacity in utilities */
+    --input: 0 0% 20%;
+    --ring: 183 100% 50%;     /* Primary color for rings */
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  /* Typography Semantic Styles */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-tight;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl font-semibold;
+  }
+  
+  h3 {
+    @apply text-2xl font-semibold;
+  }
+
+  .text-caption {
+    @apply text-sm text-muted-foreground;
+  }
+
+  .text-badge {
+    @apply text-xs font-medium font-mono uppercase tracking-wider;
+  }
+
+  /* Product Analyzer Typography */
+  .section-title {
+    @apply text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-4;
+  }
+
+  .section-description {
+    @apply text-lg text-muted-foreground max-w-2xl mx-auto;
+  }
+
+  .card-title {
+    @apply text-2xl font-bold text-foreground;
+  }
+
+  .card-subtitle {
+    @apply text-sm text-muted-foreground;
+  }
+
+  .helper-text {
+    @apply text-sm text-muted-foreground;
+  }
+
+  .chip-label {
+    @apply text-xs font-medium;
+  }
+}
+
+@layer utilities {
+  /* Glassmorphism */
+  .glass {
+    @apply bg-white/[0.02] backdrop-blur-md border border-white/[0.08];
+  }
+
+  .glass-card {
+    @apply bg-card/60 backdrop-blur-xl border border-white/[0.08] shadow-xl;
+  }
+
+  .noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    @apply pointer-events-none absolute inset-0 z-50 opacity-[0.03] mix-blend-overlay;
+  }
+
+  /* Neon Glow */
+  .neon-glow {
+    box-shadow: 0 0 10px theme('colors.primary.DEFAULT'),
+                0 0 20px theme('colors.primary.DEFAULT'),
+                0 0 40px theme('colors.primary.DEFAULT');
+  }
+  
+  .neon-text {
+    text-shadow: 0 0 5px theme('colors.primary.DEFAULT'),
+                 0 0 10px theme('colors.primary.DEFAULT');
+  }
+
+  /* Subtle Grid Background */
+  .bg-grid-white {
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+}
