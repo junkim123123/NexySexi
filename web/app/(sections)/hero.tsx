@@ -60,10 +60,10 @@ export default function Hero() {
               {/* CTA Buttons */}
               <div className="flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
                 <a
-                  href="/copilot"
+                  href="/chat"
                   className="group relative inline-flex items-center justify-center rounded-xl bg-primary px-8 py-3.5 text-base font-bold text-black transition-all duration-300 hover:bg-primary/90 hover:shadow-[0_0_24px_-4px_theme(colors.primary.DEFAULT)] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
                 >
-                  Start a free analysis
+                  Start with Nexi Chat
                   <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </a>
               </div>

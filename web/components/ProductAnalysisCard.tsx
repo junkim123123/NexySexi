@@ -10,9 +10,14 @@
 
 'use client';
 
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import type { ProductAnalysis } from '@/lib/product-analysis/schema';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { CategoryKnowledgeCards } from '@/components/category-knowledge-cards';
+import { AdvancedAnalysisView } from '@/components/AdvancedAnalysisView';
+import { ChevronDown, ChevronUp, BarChart3 } from 'lucide-react';
 
 interface ProductAnalysisCardProps {
   analysis: ProductAnalysis;
@@ -38,27 +43,52 @@ function getRiskColor(risk: string): string {
 }
 
 export function ProductAnalysisCard({ analysis, className = '' }: ProductAnalysisCardProps) {
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const riskLevel = analysis.risk_assessment.overall_score >= 80 ? 'Low' : 
+                    analysis.risk_assessment.overall_score >= 60 ? 'Medium' : 'High';
+
+  const hasAdvancedData = 
+    analysis.estimate_confidence !== undefined ||
+    (analysis.assumptions && analysis.assumptions.length > 0) ||
+    (analysis.missing_info && analysis.missing_info.length > 0) ||
+    (analysis.regulation_reasoning && analysis.regulation_reasoning.length > 0) ||
+    (analysis.testing_cost_estimate && analysis.testing_cost_estimate.length > 0) ||
+    analysis.initial_order_cost;
+
   return (
     <div className={`space-y-6 ${className}`}>
       <Card>
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-          <div className="flex-1">
-            <h3 className="card-title">{analysis.product_name}</h3>
-            <p className="card-subtitle mt-1">Est. HTS Code: {analysis.hts_code}</p>
-          </div>
-          <div className="flex flex-col items-start sm:items-end shrink-0">
-            <span className="text-badge text-muted-foreground mb-1">Risk Score</span>
-            <span className={`text-4xl font-bold ${getScoreColor(analysis.risk_assessment.overall_score)}`}>
-              {analysis.risk_assessment.overall_score}
-            </span>
+        {/* Key Metrics Header - Most Important Info First */}
+        <div className="mb-6 pb-6 border-b border-subtle-border">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex-1">
+              <h3 className="card-title mb-2">{analysis.product_name}</h3>
+              <p className="card-subtitle mb-4">Est. HTS Code: {analysis.hts_code}</p>
+              <div className="flex flex-wrap gap-4">
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Total Landed Cost</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-primary">{analysis.landed_cost_breakdown.landed_cost}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Overall Risk</p>
+                  <div className="flex items-baseline gap-2">
+                    <p className={`text-xl sm:text-2xl font-bold ${getRiskColor(riskLevel)}`}>
+                      {riskLevel}
+                    </p>
+                    <span className={`text-sm font-semibold ${getScoreColor(analysis.risk_assessment.overall_score)}`}>
+                      ({analysis.risk_assessment.overall_score}/100)
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Landed Cost Breakdown */}
         <div className="mb-6 pb-6 border-b border-subtle-border">
-          <h4 className="text-lg font-semibold mb-4">Landed Cost Breakdown</h4>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+          <h4 className="text-lg font-semibold mb-4">Cost Breakdown</h4>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div>
               <p className="text-xs text-muted-foreground mb-1">FOB Price</p>
               <p className="text-lg font-semibold">{analysis.landed_cost_breakdown.fob_price}</p>
@@ -68,16 +98,12 @@ export function ProductAnalysisCard({ analysis, className = '' }: ProductAnalysi
               <p className="text-lg font-semibold">{analysis.landed_cost_breakdown.freight_cost}</p>
             </div>
             <div>
-              <p className="text-xs text-muted-foreground mb-1">Duty Rate</p>
-              <p className="text-lg font-semibold">{analysis.landed_cost_breakdown.duty_rate}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground mb-1">Duty Cost</p>
+              <p className="text-xs text-muted-foreground mb-1">Duty ({analysis.landed_cost_breakdown.duty_rate})</p>
               <p className="text-lg font-semibold">{analysis.landed_cost_breakdown.duty_cost}</p>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="text-xs text-muted-foreground mb-1">Total Landed Cost</p>
-              <p className="text-xl font-bold text-primary">{analysis.landed_cost_breakdown.landed_cost}</p>
+              <p className="text-xs text-muted-foreground mb-1">Total</p>
+              <p className="text-lg font-bold text-primary">{analysis.landed_cost_breakdown.landed_cost}</p>
             </div>
           </div>
         </div>
@@ -116,7 +142,38 @@ export function ProductAnalysisCard({ analysis, className = '' }: ProductAnalysi
           <h4 className="text-lg font-semibold mb-2">Recommendation</h4>
           <p className="text-sm text-foreground leading-relaxed">{analysis.recommendation}</p>
         </div>
+
+        {/* Advanced View Toggle */}
+        {hasAdvancedData && (
+          <div className="mt-6 pt-6 border-t border-subtle-border">
+            <Button
+              variant="outline"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="w-full sm:w-auto"
+            >
+              <BarChart3 className="h-4 w-4 mr-2" />
+              {showAdvanced ? 'Hide' : 'Show'} Advanced Analysis
+              {showAdvanced ? (
+                <ChevronUp className="h-4 w-4 ml-2" />
+              ) : (
+                <ChevronDown className="h-4 w-4 ml-2" />
+              )}
+            </Button>
+          </div>
+        )}
       </Card>
+
+      {/* Advanced Analysis View */}
+      {hasAdvancedData && (
+        <motion.div
+          initial={false}
+          animate={{ height: showAdvanced ? 'auto' : 0, opacity: showAdvanced ? 1 : 0 }}
+          transition={{ duration: 0.2 }}
+          className="overflow-hidden"
+        >
+          {showAdvanced && <AdvancedAnalysisView analysis={analysis} />}
+        </motion.div>
+      )}
 
       {/* Category Knowledge Cards (compliance hints, factory vetting, etc.) */}
       <CategoryKnowledgeCards analysis={analysis} />

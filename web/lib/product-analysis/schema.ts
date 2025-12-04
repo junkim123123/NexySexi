@@ -19,6 +19,13 @@ export const RiskAssessmentSchema = z.object({
   summary: z.string().describe("Short summary of the risk profile"),
 });
 
+export const NarrativeSummarySchema = z.object({
+  executive_summary: z.string().describe("3–5 sentence summary of the analysis"),
+  cost_drivers_explained: z.string().describe("Explanation of FOB / freight / duty / extra cost structure"),
+  channel_specific_notes: z.string().describe("Notes specific to the sales channel (e.g., Amazon FBA, Retail, DTC)"),
+  next_step_recommendations: z.string().describe("3–5 actionable next steps for the user"),
+});
+
 export const ProductAnalysisSchema = z.object({
   product_name: z.string().describe("Identified product name"),
   hts_code: z.string().describe("Estimated HTS/HS Code"),
@@ -28,6 +35,7 @@ export const ProductAnalysisSchema = z.object({
   estimate_confidence: z.number().min(0).max(100).optional().describe("Confidence score of the estimate (0-100)"),
   missing_info: z.array(z.string()).optional().describe("List of key information that is missing"),
   assumptions: z.array(z.string()).optional().describe("List of assumptions made for the analysis"),
+  narrative_summary: NarrativeSummarySchema.optional().describe("Detailed narrative summary of the analysis"),
 });
 
 export type LandedCostBreakdown = z.infer<typeof LandedCostBreakdownSchema>;

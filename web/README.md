@@ -111,6 +111,22 @@ nexsupply-platform/
 - ✅ Error handling with generic error codes
 - ✅ Database files excluded from Git
 
+## Sanity CMS
+
+### Sanity Studio 실행
+
+마케팅 페이지 콘텐츠를 관리하기 위한 Sanity Studio를 실행하려면:
+
+```bash
+cd ../sanity
+npm install
+npm run dev
+```
+
+브라우저에서 `http://localhost:3333`로 접속하면 Sanity Studio가 열립니다.
+
+자세한 내용은 프로젝트 루트의 `SANITY_STUDIO_GUIDE.md`를 참고하세요.
+
 ## License
 
 © 2017 NexSupply. All rights reserved.

@@ -17,11 +17,36 @@ export function Card({ children, className, padding = 'md' }: CardProps) {
   return (
     <div
       className={cn(
-        'glass-card border border-subtle-border rounded-2xl',
+        'rounded-xl border border-neutral-200 shadow-sm',
         paddingClasses[padding],
         className
       )}
     >
+      {children}
+    </div>
+  );
+}
+
+// Sub-components for compatibility with shadcn/ui patterns
+export function CardHeader({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <div className={cn('flex flex-col space-y-1.5 p-6', className)}>
+      {children}
+    </div>
+  );
+}
+
+export function CardTitle({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <h3 className={cn('text-2xl font-semibold leading-none tracking-tight', className)}>
+      {children}
+    </h3>
+  );
+}
+
+export function CardContent({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <div className={cn('p-6 pt-0', className)}>
       {children}
     </div>
   );

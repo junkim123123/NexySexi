@@ -24,6 +24,12 @@ import { useAuth } from '@/lib/auth';
 import SignInModal from '@/components/sign-in-modal';
 import { logEvent } from '@/lib/analytics/telemetry';
 import { logCategoryUsage, buildCategoryUsageEvent } from '@/lib/analytics/categoryUsage';
+import { QuickReplyButtons } from '@/components/copilot/QuickReplyButtons';
+import { SuggestedQuestions } from '@/components/copilot/SuggestedQuestions';
+import { ContractCTACard } from '@/components/copilot/ContractCTACard';
+import { CategoryQuestionsFlow } from '@/components/copilot/CategoryQuestionsFlow';
+import { getHighPriorityQuestions, hasCategoryQuestions } from '@/lib/ai/categoryQuestions';
+import type { CategoryQuestion } from '@/lib/types/categoryQuestions';
 
 interface ChatMessage {
   id: string;
@@ -33,6 +39,9 @@ interface ChatMessage {
   error?: string;
   errorReason?: string;
   isLoading?: boolean;
+  showCTACard?: boolean; // Flag to show contract CTA card
+  categoryQuestions?: CategoryQuestion[]; // Category-specific questions to ask
+  categoryQuestionAnswers?: Record<string, string>; // Answers to category questions
 }
 
 export default function CopilotPage() {
@@ -45,6 +54,8 @@ export default function CopilotPage() {
   const [showSignInModal, setShowSignInModal] = useState(false);
   const { isAuthenticated, isLoading: isAuthLoading, userId } = useAuth();
   const limitHitLoggedRef = useRef(false);
+  // Store category question answers for future analysis
+  const categoryAnswersRef = useRef<Record<string, Record<string, string>>>({});
 
   // Initialize with welcome message
   useEffect(() => {
@@ -52,29 +63,54 @@ export default function CopilotPage() {
       setMessages([{
         id: 'welcome',
         role: 'assistant',
-        content: "Hello! I'm the NexSupply Copilot. I can help you analyze product sourcing opportunities.\n\nJust describe your product idea, paste an Alibaba link, or upload a photo, and I'll give you an instant landed cost and risk analysis.",
+        content: "Hi! I'm your NexSupply sourcing assistant. I'll ask a few quick questions to understand your product, then generate a detailed landed cost and risk analysis.\n\nWhat product would you like to analyze? Select a category below or describe it in your own words.",
       }]);
       logEvent('copilot_viewed', {});
     }
   }, [isAuthLoading, messages.length]);
+
+  // Helper to check if user has started analyzing (not just welcome message)
+  const hasUserInteraction = messages.some(m => m.role === 'user' || (m.role === 'assistant' && m.id !== 'welcome' && !m.isLoading));
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
+  const handleQuickReply = async (text: string) => {
+    // Directly call handleSubmit with the text
+    await handleSubmit(undefined, text);
+  };
+
+  const handleNeedHelp = () => {
+    // Add helpful guide message when user clicks "Not sure"
+    const helpMessage: ChatMessage = {
+      id: `help-${Date.now()}`,
+      role: 'assistant',
+      content: "No problem! You can start in any of these ways:\n\n• **Describe your product idea** in your own words\n• **Paste an Alibaba link** for instant analysis\n• **Upload a product photo** and I'll help identify it\n\nOr select one of the category examples above to get started!",
+    };
+    setMessages(prev => [...prev, helpMessage]);
+  };
+
+  const handleSubmit = async (e?: React.FormEvent, inputText?: string) => {
+    if (e) {
+      e.preventDefault();
+    }
+    const textToAnalyze = inputText || input.trim();
+    if (!textToAnalyze || isLoading) return;
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
-      content: input.trim(),
+      content: textToAnalyze.trim(),
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInput('');
+    if (!inputText) {
+      setInput('');
+    } else {
+      setInput('');
+    }
     setIsLoading(true);
     limitHitLoggedRef.current = false;
 
@@ -134,7 +170,7 @@ export default function CopilotPage() {
             {
               id: `error-${Date.now()}`,
               role: 'assistant',
-              content: "I've reached my daily analysis limit for today. You can sign up for more analyses or book a consultation.",
+              content: "I've reached my daily analysis limit for today. Don't worry—you can sign up for a free account to get more analyses, or book a consultation to discuss your sourcing needs.",
             },
             {
               id: `limit-${Date.now()}`,
@@ -149,13 +185,13 @@ export default function CopilotPage() {
             {
               id: `error-${Date.now()}`,
               role: 'assistant',
-              content: "I couldn't complete this analysis. Please try again or adjust your description.",
+              content: "I had trouble analyzing that. Could you try rephrasing your product description? You can also paste an Alibaba link or upload a photo if that helps.",
               error: data.message || data.error || 'Analysis failed',
             },
           ]);
         }
       } else {
-        // Success - add analysis summary and card
+        // Success - Triple-step pattern: summary, analysis card, follow-up
         const analysis = data.analysis as ProductAnalysis;
 
         // Extract category ID from compliance hints if available
@@ -171,22 +207,54 @@ export default function CopilotPage() {
           console.error('[Copilot] Failed to log category usage:', err);
         });
 
+        // Check if we have category-specific questions
+        const categoryQuestions = categoryId && hasCategoryQuestions(categoryId)
+          ? getHighPriorityQuestions(categoryId)
+          : [];
+
         // Build summary text
         const summary = buildAnalysisSummary(analysis);
+        const followUp = getFollowUpQuestion(analysis);
+        const now = Date.now();
 
-        setMessages(prev => [
-          ...prev,
+        // Build messages array
+        const newMessages: ChatMessage[] = [
           {
-            id: `summary-${Date.now()}`,
+            id: `summary-${now}`,
             role: 'assistant',
             content: summary,
           },
           {
-            id: `analysis-${Date.now()}`,
+            id: `analysis-${now}`,
             role: 'assistant',
             analysis,
           },
-        ]);
+          {
+            id: `followup-${now}`,
+            role: 'assistant',
+            content: followUp,
+          },
+        ];
+
+        // Add category questions if available (before CTA)
+        if (categoryQuestions.length > 0) {
+          newMessages.push({
+            id: `category-questions-${now}`,
+            role: 'assistant',
+            categoryQuestions,
+          });
+        }
+
+        // Add CTA card
+        newMessages.push({
+          id: `cta-${now}`,
+          role: 'assistant',
+          showCTACard: true,
+          analysis,
+        });
+
+        // Add all messages
+        setMessages(prev => [...prev, ...newMessages]);
 
         // Log event
         logEvent('copilot_analysis_completed', {
@@ -204,7 +272,7 @@ export default function CopilotPage() {
         {
           id: `error-${Date.now()}`,
           role: 'assistant',
-          content: "I encountered an error while analyzing. Please try again.",
+          content: "Something went wrong on my end. Please try again in a moment, or describe your product differently.",
           error: err instanceof Error ? err.message : 'Unknown error',
         },
       ]);
@@ -214,26 +282,69 @@ export default function CopilotPage() {
   };
 
   const buildAnalysisSummary = (analysis: ProductAnalysis): string => {
-    const parts: string[] = [];
+    const { product_name, landed_cost_breakdown, risk_assessment, testing_cost_estimate, regulation_reasoning } = analysis;
+    const riskLevel = risk_assessment.overall_score >= 80 ? 'Low' : risk_assessment.overall_score >= 60 ? 'Medium' : 'High';
+    
+    // Build concise 2-4 line conversational summary
+    let summary = `I've analyzed **${product_name}**. The estimated landed cost is **${landed_cost_breakdown.landed_cost}**, with a **${riskLevel} Risk** score (${risk_assessment.overall_score}/100).`;
 
-    parts.push(`I've analyzed **${analysis.product_name}** (HTS: ${analysis.hts_code}).`);
-
-    parts.push(`\n**Landed Cost:** ${analysis.landed_cost_breakdown.landed_cost}`);
-    parts.push(`**Risk Score:** ${analysis.risk_assessment.overall_score}/100 (${analysis.risk_assessment.overall_score >= 80 ? 'Low' : analysis.risk_assessment.overall_score >= 60 ? 'Medium' : 'High'} Risk)`);
-
-    if (analysis.regulation_reasoning && analysis.regulation_reasoning.length > 0) {
-      parts.push(`\n**Key Regulations:** ${analysis.regulation_reasoning.slice(0, 3).map(r => r.regulation).join(', ')}`);
+    // Add key risk insight (one sentence)
+    const primaryRisk = 
+      risk_assessment.compliance_risk === 'High' ? 'compliance' :
+      risk_assessment.supplier_risk === 'High' ? 'supplier reliability' :
+      risk_assessment.logistics_risk === 'High' ? 'logistics' :
+      null;
+    
+    if (primaryRisk) {
+      summary += ` The main concern is ${primaryRisk} risk.`;
     }
 
-    if (analysis.testing_cost_estimate && analysis.testing_cost_estimate.length > 0) {
-      const totalLow = analysis.testing_cost_estimate.reduce((sum, t) => sum + t.low, 0);
-      const totalHigh = analysis.testing_cost_estimate.reduce((sum, t) => sum + t.high, 0);
-      parts.push(`\n**Estimated Testing Costs:** $${totalLow}-$${totalHigh}`);
+    // Add testing requirement mention if applicable (2nd paragraph)
+    if (testing_cost_estimate && testing_cost_estimate.length > 0) {
+      const totalLow = testing_cost_estimate.reduce((sum, t) => sum + t.low, 0);
+      const totalHigh = testing_cost_estimate.reduce((sum, t) => sum + t.high, 0);
+      summary += `\n\nThis product requires mandatory lab testing (estimated $${totalLow}-$${totalHigh}) to meet compliance standards.`;
+    } else if (regulation_reasoning && regulation_reasoning.length > 0) {
+      summary += `\n\nStandard import requirements apply with no major testing hurdles expected.`;
     }
 
-    parts.push(`\n${analysis.recommendation}`);
+    return summary;
+  };
 
-    return parts.join('\n');
+  const getFollowUpQuestion = (analysis: ProductAnalysis): string => {
+    const { risk_assessment, testing_cost_estimate, landed_cost_breakdown, compliance_hints } = analysis;
+    
+    // Priority 1: High compliance risk or testing needed
+    if (risk_assessment.compliance_risk === 'High' || (testing_cost_estimate && testing_cost_estimate.length > 0)) {
+      if (testing_cost_estimate && testing_cost_estimate.length > 3) {
+        return "Should we estimate a detailed lab testing budget for your launch? This product will need multiple certifications.";
+      }
+      return "Should we estimate a detailed lab testing budget for your launch?";
+    }
+
+    // Priority 2: High supplier risk
+    if (risk_assessment.supplier_risk === 'High') {
+      return "Do you want me to help you find a pre-vetted supplier with better credentials?";
+    }
+
+    // Priority 3: High logistics risk
+    if (risk_assessment.logistics_risk === 'High') {
+      return "Shipping costs look volatile. Should we compare freight rates from different ports?";
+    }
+
+    // Priority 4: High duty rate (check if duty cost is significant)
+    const dutyRateMatch = landed_cost_breakdown.duty_rate.match(/(\d+)/);
+    if (dutyRateMatch && parseInt(dutyRateMatch[1]) > 15) {
+      return "The duty rate is quite high. Do you want to compare this with a non-China supplier to see if we can lower costs?";
+    }
+
+    // Priority 5: Has compliance hints but low risk
+    if (compliance_hints) {
+      return "This looks like a solid opportunity. Do you want to dive deeper into compliance requirements or start sourcing quotes?";
+    }
+
+    // Default conversation starter
+    return "Want to explore other sourcing options or refine this analysis further?";
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -270,7 +381,7 @@ export default function CopilotPage() {
   if (!isAuthenticated) {
     return (
       <>
-        {showSignInModal && <SignInModal onClose={() => setShowSignInModal(false)} />}
+        <SignInModal open={showSignInModal} onClose={() => setShowSignInModal(false)} />
         <div className="flex flex-col items-center justify-center min-h-screen px-4">
           <Card className="max-w-md w-full text-center p-8">
             <h1 className="text-2xl font-bold mb-4">Welcome to NexSupply Copilot</h1>
@@ -288,24 +399,47 @@ export default function CopilotPage() {
 
   return (
     <>
-      {showSignInModal && <SignInModal onClose={() => setShowSignInModal(false)} />}
+      {showSignInModal && <SignInModal open={showSignInModal} onClose={() => setShowSignInModal(false)} />}
       <div className="flex flex-col h-screen max-w-4xl mx-auto">
         {/* Header */}
         <div className="border-b border-subtle-border p-4 sm:p-6">
           <h1 className="text-2xl font-bold">NexSupply Copilot</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Your AI-powered sourcing analysis assistant
+          <p className="text-sm text-muted-foreground mt-1.5">
+            I'll ask 3-5 quick questions about your product, then generate a comprehensive landed cost and risk report. Just describe your product or paste an Alibaba link to get started.
           </p>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
-          {messages.map((message) => {
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3">
+          {messages.map((message, messageIndex) => {
+            // Determine if this and next message are part of same triple-step response
+            const nextMessage = messageIndex < messages.length - 1 ? messages[messageIndex + 1] : null;
+            const isTripleStep = message.id?.startsWith('summary-') || 
+                                message.id?.startsWith('analysis-') || 
+                                message.id?.startsWith('followup-');
+            const isNextTripleStep = nextMessage && (
+              nextMessage.id?.startsWith('summary-') || 
+              nextMessage.id?.startsWith('analysis-') || 
+              nextMessage.id?.startsWith('followup-')
+            );
+            
+            // Check if same timestamp (same analysis response)
+            const currentTimestamp = isTripleStep ? message.id.split('-').slice(1).join('-') : null;
+            const nextTimestamp = isNextTripleStep && nextMessage ? nextMessage.id.split('-').slice(1).join('-') : null;
+            const areRelated = currentTimestamp && nextTimestamp && currentTimestamp === nextTimestamp;
+            
+            // Reduce spacing for related messages in triple-step pattern
+            const spacingClass = areRelated ? 'mb-1.5' : 
+                                message.role === 'user' || (nextMessage && nextMessage.role === 'user') ? 'mb-4' :
+                                'mb-3';
+
             if (message.isLoading) {
               return (
-                <div key={message.id} className="flex justify-start">
-                  <div className="px-4 py-3 rounded-lg bg-surface border border-subtle-border">
-                    <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                <div key={message.id} className={spacingClass}>
+                  <div className="flex justify-start">
+                    <div className="px-4 py-3 rounded-lg bg-surface border border-subtle-border">
+                      <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+                    </div>
                   </div>
                 </div>
               );
@@ -313,31 +447,127 @@ export default function CopilotPage() {
 
             if (message.role === 'user') {
               return (
-                <div key={message.id} className="flex justify-end">
-                  <div className="px-4 py-3 rounded-lg bg-primary text-black max-w-[85%] sm:max-w-lg">
-                    <p className="whitespace-pre-wrap break-words">{message.content}</p>
+                <div key={message.id} className={spacingClass}>
+                  <div className="flex justify-end">
+                    <div className="px-4 py-3 rounded-lg bg-primary text-black max-w-[85%] sm:max-w-lg">
+                      <p className="whitespace-pre-wrap break-words">{message.content}</p>
+                    </div>
                   </div>
                 </div>
               );
             }
 
             if (message.role === 'assistant') {
+              const isFollowUp = message.id?.startsWith('followup-');
+              const isSummary = message.id?.startsWith('summary-');
+              const isWelcome = message.id === 'welcome';
+              
               return (
-                <div key={message.id} className="flex flex-col gap-4">
+                <div key={message.id} className={spacingClass}>
                   {message.content && (
                     <div className="flex justify-start">
-                      <div className="px-4 py-3 rounded-lg bg-surface border border-subtle-border max-w-[85%] sm:max-w-lg">
-                        <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">
+                      <div className={`px-4 py-3 rounded-lg max-w-[85%] sm:max-w-lg ${
+                        isFollowUp 
+                          ? 'bg-primary/5 border border-primary/20' 
+                          : 'bg-surface border border-subtle-border'
+                      }`}>
+                        <p className={`whitespace-pre-wrap break-words leading-relaxed ${
+                          isFollowUp ? 'text-sm text-foreground italic' : 'text-sm leading-relaxed'
+                        }`}>
                           {message.content.split('**').map((part, i) => 
-                            i % 2 === 1 ? <strong key={i}>{part}</strong> : part
+                            i % 2 === 1 ? <strong key={i} className="font-semibold text-foreground">{part}</strong> : part
                           )}
                         </p>
+                        {/* Show quick reply buttons and suggested questions only on welcome message */}
+                        {isWelcome && !hasUserInteraction && (
+                          <div className="mt-4">
+                            <QuickReplyButtons 
+                              onSelect={handleQuickReply} 
+                              onNeedHelp={handleNeedHelp}
+                              disabled={isLoading} 
+                            />
+                            <SuggestedQuestions onSelect={handleQuickReply} disabled={isLoading} />
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
                   {message.analysis && (
                     <div className="max-w-full">
                       <ProductAnalysisCard analysis={message.analysis} />
+                    </div>
+                  )}
+                  {message.categoryQuestions && message.categoryQuestions.length > 0 && (
+                    <div className="max-w-full mt-4">
+                      <div className="mb-3">
+                        <p className="text-sm text-muted-foreground">
+                          To provide a more accurate analysis, I have a few additional questions about this product category:
+                        </p>
+                      </div>
+                      <CategoryQuestionsFlow
+                        questions={message.categoryQuestions}
+                        onComplete={(answers) => {
+                          // Update the message with answers
+                          setMessages(prev => prev.map(msg => 
+                            msg.id === message.id
+                              ? { ...msg, categoryQuestionAnswers: answers }
+                              : msg
+                          ));
+                          // Store answers for future reference
+                          const categoryId = message.analysis?.compliance_hints?.id;
+                          if (categoryId) {
+                            categoryAnswersRef.current[categoryId] = answers;
+                          }
+
+                          // Log the answers
+                          logEvent('category_questions_answered', {
+                            category_id: categoryId,
+                            question_count: message.categoryQuestions?.length || 0,
+                            answer_count: Object.keys(answers).length,
+                            answers: answers, // Store full answers for future analysis
+                          });
+
+                          // Show confirmation message
+                          setMessages(prev => [
+                            ...prev,
+                            {
+                              id: `category-answers-thanks-${Date.now()}`,
+                              role: 'assistant',
+                              content: "Thank you for those details! I've saved your answers. This information will help me provide more accurate analysis for similar products in the future.",
+                            },
+                          ]);
+                        }}
+                        onSkip={() => {
+                          const categoryId = message.analysis?.compliance_hints?.id;
+                          logEvent('category_questions_skipped', {
+                            category_id: categoryId,
+                            question_count: message.categoryQuestions?.length || 0,
+                          });
+                          // Optionally remove the questions message if skipped
+                          // setMessages(prev => prev.filter(msg => msg.id !== message.id));
+                        }}
+                        disabled={isLoading}
+                      />
+                    </div>
+                  )}
+                  {message.showCTACard && message.analysis && (
+                    <div className="max-w-full mt-4">
+                      <ContractCTACard
+                        bookingUrl={process.env.NEXT_PUBLIC_BOOKING_URL}
+                        contractUrl={process.env.NEXT_PUBLIC_CONTRACT_URL}
+                        onBookingClick={() => {
+                          logEvent('cta_booking_click', {
+                            source: 'copilot',
+                            product_name: message.analysis?.product_name,
+                          });
+                        }}
+                        onContractClick={() => {
+                          logEvent('cta_contract_click', {
+                            source: 'copilot',
+                            product_name: message.analysis?.product_name,
+                          });
+                        }}
+                      />
                     </div>
                   )}
                   {message.error && (
@@ -353,7 +583,7 @@ export default function CopilotPage() {
 
             if (message.role === 'system' && message.errorReason) {
               return (
-                <div key={message.id} className="max-w-full">
+                <div key={message.id} className="mb-4">
                   <LimitReachedCard
                     variant={message.errorReason === 'anonymous_daily_limit' ? 'anonymous' : 'user'}
                     alphaSignupUrl={process.env.NEXT_PUBLIC_ALPHA_SIGNUP_URL}
@@ -378,7 +608,7 @@ export default function CopilotPage() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Describe your product, paste an Alibaba link, or ask a question..."
+                placeholder="Type your answer or tap one of the options above..."
                 className="w-full h-12 pl-12 pr-4 rounded-lg bg-surface border border-subtle-border text-foreground placeholder-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 disabled={isLoading}
               />
@@ -415,9 +645,12 @@ export default function CopilotPage() {
               Image attached: {productImage.name}
             </p>
           )}
+          {/* Show suggested questions below input when no user interaction yet */}
+          {!hasUserInteraction && messages.length > 0 && (
+            <SuggestedQuestions onSelect={handleQuickReply} disabled={isLoading} />
+          )}
         </div>
       </div>
     </>
   );
 }
-

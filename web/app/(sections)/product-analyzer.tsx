@@ -3,8 +3,8 @@
 import { useState, useId, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, ArrowRight, AlertTriangle, CheckCircle, Camera, MessageSquare } from 'lucide-react';
+import Link from 'next/link';
 import type { ProductAnalysis } from '@/lib/product-analysis/schema';
-import ProductAnalyzerChat from './product-analyzer-chat';
 import { createLeadFromAnalysis } from '@/lib/sample-request/fromAnalysis';
 import { logEvent } from '@/lib/analytics/telemetry';
 import { useAuth } from '@/lib/auth';
@@ -14,6 +14,7 @@ import { ProductAnalysisFeedback } from '@/components/product-analysis-feedback'
 import { CategoryKnowledgeCards } from '@/components/category-knowledge-cards';
 import SignInModal from '@/components/sign-in-modal';
 import LimitReachedCard from '@/components/LimitReachedCard';
+import { QuickAnalyzerInput } from '@/components/analyzer/QuickAnalyzerInput';
 
 export default function ProductAnalyzer({ source }: { source?: string }) {
   const [input, setInput] = useState('');
@@ -42,8 +43,7 @@ export default function ProductAnalyzer({ source }: { source?: string }) {
     setIsPresetSubmitting(true);
   };
   
-  // View and Form State
-  const [viewMode, setViewMode] = useState<'form' | 'chat'>('form');
+  const [showQuickInput, setShowQuickInput] = useState(false);
   const [showLeadForm, setShowLeadForm] = useState(false);
   const [leadName, setLeadName] = useState('');
   const [leadEmail, setLeadEmail] = useState('');
@@ -91,7 +91,6 @@ export default function ProductAnalyzer({ source }: { source?: string }) {
           if (data.reason !== 'anonymous_daily_limit') {
             setShowSignInModal(true);
           }
-          // Log limit_hit event (only once per attempt)
           if (!limitHitLoggedRef.current) {
             limitHitLoggedRef.current = true;
             const userType = isAuthenticated ? 'user' : 'anonymous';
@@ -114,7 +113,6 @@ export default function ProductAnalyzer({ source }: { source?: string }) {
 
       setAnalysis(data.analysis);
       logEvent('analyzer_quick_scan_completed', { source, path: 'quick_scan' });
-      // Reset limit hit flag on successful analysis
       limitHitLoggedRef.current = false;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
@@ -379,10 +377,8 @@ export default function ProductAnalyzer({ source }: { source?: string }) {
             </Card>
             )}
 
-          {/* Category Knowledge Cards */}
           <CategoryKnowledgeCards analysis={analysis} />
 
-          {/* Alpha Disclaimer and Feedback */}
           <ProductAnalysisFeedback analysis={analysis} mode="quick_scan" source={source} />
         </motion.div>
       );
@@ -396,7 +392,6 @@ export default function ProductAnalyzer({ source }: { source?: string }) {
     );
   };
 
-  // Container width constant
   const CONTAINER_MAX_WIDTH = 'max-w-4xl';
   const CONTAINER_PADDING = 'px-4 sm:px-6 lg:px-8';
 
@@ -404,141 +399,70 @@ export default function ProductAnalyzer({ source }: { source?: string }) {
     <section id="product-analyzer" className="relative w-full bg-background py-12 sm:py-16 lg:py-20 border-t border-subtle-border">
       {showSignInModal && <SignInModal onClose={() => setShowSignInModal(false)} />}
       <div className={`${CONTAINER_MAX_WIDTH} mx-auto ${CONTAINER_PADDING}`}>
-        <AnimatePresence mode="wait">
-          {viewMode === 'form' ? (
-            <motion.div key="form" className="space-y-12">
-              {/* Block 1: Section Header */}
-              <div className="text-center">
-                <h2 className="section-title">Try the NexSupply Analyzer</h2>
-                <p className="section-description">
-                  Describe a product, paste an Alibaba link, or upload a photo. We will infer the category, estimate landed cost to your target country, and highlight sourcing risks.
-                </p>
-              </div>
+        <motion.div key="form" className="space-y-12">
+          <div className="text-center">
+            <h2 className="section-title">Start Your Analysis with Copilot</h2>
+            <p className="section-description">
+              New to importing? Let our AI assistant guide you. We’ll ask 3-5 quick questions to generate a comprehensive landed cost and risk report for your product idea.
+            </p>
+          </div>
 
-              {/* Block 2: Product Analyzer Card */}
-              <Card className="space-y-6">
-                <form onSubmit={handleAnalyze} className="relative" ref={formRef}>
-                  <div className="relative flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      placeholder="e.g. 'Noise-cancelling headphones' or AliExpress URL..."
-                      className="w-full h-14 pl-14 pr-32 rounded-full bg-surface border border-subtle-border text-foreground placeholder-muted-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-lg"
-                      disabled={isLoading}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="absolute left-2 top-2 bottom-2 aspect-square h-10 w-10 flex items-center justify-center rounded-full bg-surface hover:bg-white/10 transition-colors text-muted-foreground"
-                    >
-                      <Camera className="h-5 w-5" />
-                    </button>
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      accept="image/*"
-                      capture="environment"
-                      onChange={handleImageChange}
-                      className="hidden"
-                    />
-                    {productImage && (
-                      <div className="absolute left-14 top-1/2 -translate-y-1/2 text-xs text-muted-foreground bg-surface px-2 py-1 rounded-md border border-subtle-border">
-                        {productImage.name}
-                      </div>
-                    )}
-                    <Button
-                      type="submit"
-                      disabled={isLoading || !input.trim()}
-                      className="absolute right-2 top-2 bottom-2 rounded-full min-w-[100px]"
-                    >
-                      {isLoading ? (
-                        <Loader2 className="h-5 w-5 animate-spin" />
-                      ) : (
-                        <>
-                          Analyze <ArrowRight className="ml-2 h-4 w-4" />
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </form>
+          <Card className="text-center space-y-4 p-8 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
+            <h3 className="text-xl font-semibold">Let's Analyze Your Product Idea</h3>
+            <p className="text-sm text-muted-foreground">
+              Our Copilot makes it easy to understand your sourcing risks and opportunities.
+            </p>
+            <Link href="/copilot">
+              <Button size="lg" className="text-base px-8 py-6">
+                <MessageSquare className="h-5 w-5 mr-2" />
+                Start with a Conversation
+              </Button>
+            </Link>
+          </Card>
 
-                <div className="text-center space-y-3">
-                  <div className="flex items-center justify-center gap-2 flex-wrap">
-                    {presets.map((preset) => (
-                      <Button
-                        key={preset}
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handlePresetClick(preset)}
-                        className="text-xs"
-                      >
-                        {preset}
-                      </Button>
-                    ))}
-                  </div>
-                  <p className="helper-text">
-                    You can paste a product link, describe the item in your own words, or upload a photo.
-                  </p>
-                </div>
-
-                <div className="text-center pt-4 border-t border-subtle-border">
-                  <p className="helper-text mb-3">If your idea is still vague, let our copilot help you structure it.</p>
-                  <Button
-                    onClick={() => {
-                      if (!isAuthenticated) {
-                        setShowSignInModal(true);
-                        return;
-                      }
-                      setAnalysis(null);
-                      setError('');
-                      setViewMode('chat');
-                    }}
-                    variant="outline"
-                  >
-                    <MessageSquare className="h-4 w-4 mr-2" />
-                    Describe Product with a Conversation
-                  </Button>
-                </div>
-              </Card>
-
-              {/* Analysis Result */}
-              <AnimatePresence mode="wait">
-                <motion.div key={isLoading ? 'loading' : error ? 'error' : analysis ? 'analysis' : 'empty'}>
-                  {renderAnalysisSection()}
-                </motion.div>
-              </AnimatePresence>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="chat"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="space-y-12"
+          <div className="text-center space-y-3">
+            <button
+              onClick={() => setShowQuickInput(!showQuickInput)}
+              className="text-xs text-muted-foreground hover:text-primary transition-colors"
             >
-              {/* Block 1: Section Header */}
-              <div className="text-center">
-                <h2 className="section-title">Try the NexSupply Analyzer</h2>
-                <p className="section-description">
-                  Describe a product, paste an Alibaba link, or upload a photo. We will infer the category, estimate landed cost to your target country, and highlight sourcing risks.
-                </p>
-              </div>
+              I already know exactly what I want (quick input)
+            </button>
+            <AnimatePresence>
+              {showQuickInput && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                >
+                  <Card className="p-6 border-subtle-border mt-2">
+                    <QuickAnalyzerInput
+                      onSubmit={async (inputText, image) => {
+                        setInput(inputText);
+                        setProductImage(image || null);
+                        setTimeout(() => {
+                          formRef.current?.requestSubmit();
+                        }, 100);
+                      }}
+                      placeholder="e.g. 'Noise-cancelling headphones' or AliExpress URL..."
+                      isLoading={isLoading}
+                      presets={presets}
+                      onPresetClick={(preset) => {
+                        setInput(preset);
+                        handlePresetClick(preset);
+                      }}
+                    />
+                  </Card>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
-              {/* Block 3: Conversational Copilot Card */}
-              <Card>
-                <ProductAnalyzerChat 
-                  source={source} 
-                  onAnalysisComplete={(result) => {
-                setAnalysis(result);
-                setViewMode('form');
-                  }} 
-                />
-              </Card>
+          <AnimatePresence mode="wait">
+            <motion.div key={isLoading ? 'loading' : error ? 'error' : analysis ? 'analysis' : 'empty'}>
+              {renderAnalysisSection()}
             </motion.div>
-          )}
-        </AnimatePresence>
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );

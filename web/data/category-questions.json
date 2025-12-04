@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "This file contains category-specific questions to ask users after initial analysis. These questions help gather additional context for more accurate analysis.",
+  "categories": [
+    {
+      "categoryId": "baby_teether",
+      "categoryLabel": "Baby Teether / Infant Teething Toys",
+      "questions": [
+        {
+          "id": "material_type",
+          "question": "What materials is the teether made of?",
+          "type": "multiple_choice",
+          "options": ["Silicone", "Rubber", "Wood", "Other"],
+          "importance": "high",
+          "helpText": "Material type affects CPSIA testing requirements and costs.",
+          "required": false
+        },
+        {
+          "id": "target_age",
+          "question": "What age group is this product for?",
+          "type": "multiple_choice",
+          "options": ["0-6 months", "6-12 months", "12-24 months", "24+ months"],
+          "importance": "high",
+          "helpText": "Age range determines specific safety testing requirements.",
+          "required": false
+        },
+        {
+          "id": "food_grade",
+          "question": "Is the material food-grade certified?",
+          "type": "yes_no",
+          "importance": "high",
+          "helpText": "Food-grade materials are required for products that go in babies' mouths.",
+          "required": false
+        },
+        {
+          "id": "colorants",
+          "question": "Does the product use any colorants or dyes?",
+          "type": "yes_no",
+          "importance": "medium",
+          "helpText": "Colorants must be non-toxic and FDA-approved.",
+          "required": false
+        }
+      ]
+    },
+    {
+      "categoryId": "stainless_steel_tumbler",
+      "categoryLabel": "Stainless Steel Tumbler / Water Bottle",
+      "questions": [
+        {
+          "id": "steel_grade",
+          "question": "What grade of stainless steel will be used?",
+          "type": "multiple_choice",
+          "options": ["304 (Standard)", "316 (Marine Grade)", "Not sure", "Other"],
+          "importance": "high",
+          "helpText": "Food-grade stainless steel (304 or 316) is required for food contact products.",
+          "required": false
+        },
+        {
+          "id": "coating_or_lining",
+          "question": "Does the product have any interior coating or lining?",
+          "type": "yes_no",
+          "importance": "high",
+          "helpText": "Any coating must be FDA-approved for food contact.",
+          "required": false
+        },
+        {
+          "id": "insulation_type",
+          "question": "Is this a vacuum-insulated (double-wall) product?",
+          "type": "yes_no",
+          "importance": "medium",
+          "helpText": "Vacuum insulation requires additional testing for seal integrity.",
+          "required": false
+        },
+        {
+          "id": "dishwasher_safe",
+          "question": "Will you claim the product is dishwasher safe?",
+          "type": "yes_no",
+          "importance": "medium",
+          "helpText": "Dishwasher safety claims require specific testing documentation.",
+          "required": false
+        }
+      ]
+    },
+    {
+      "categoryId": "us_baby_teether_toy",
+      "categoryLabel": "Silicone Baby Teether Toy",
+      "questions": [
+        {
+          "id": "material_type",
+          "question": "What materials is the teether made of?",
+          "type": "multiple_choice",
+          "options": ["Silicone", "Rubber", "Wood", "Other"],
+          "importance": "high",
+          "helpText": "Material type affects CPSIA testing requirements and costs.",
+          "required": false
+        },
+        {
+          "id": "target_age",
+          "question": "What age group is this product for?",
+          "type": "multiple_choice",
+          "options": ["0-6 months", "6-12 months", "12-24 months", "24+ months"],
+          "importance": "high",
+          "helpText": "Age range determines specific safety testing requirements.",
+          "required": false
+        },
+        {
+          "id": "food_grade",
+          "question": "Is the material food-grade certified?",
+          "type": "yes_no",
+          "importance": "high",
+          "helpText": "Food-grade materials are required for products that go in babies' mouths.",
+          "required": false
+        }
+      ]
+    },
+    {
+      "categoryId": "stainless_steel_water_bottle",
+      "categoryLabel": "Stainless Steel Water Bottle",
+      "questions": [
+        {
+          "id": "steel_grade",
+          "question": "What grade of stainless steel will be used?",
+          "type": "multiple_choice",
+          "options": ["304 (Standard)", "316 (Marine Grade)", "Not sure", "Other"],
+          "importance": "high",
+          "helpText": "Food-grade stainless steel (304 or 316) is required for food contact products.",
+          "required": false
+        },
+        {
+          "id": "coating_or_lining",
+          "question": "Does the product have any interior coating or lining?",
+          "type": "yes_no",
+          "importance": "high",
+          "helpText": "Any coating must be FDA-approved for food contact.",
+          "required": false
+        },
+        {
+          "id": "insulation_type",
+          "question": "Is this a vacuum-insulated (double-wall) product?",
+          "type": "yes_no",
+          "importance": "medium",
+          "helpText": "Vacuum insulation requires additional testing for seal integrity.",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
+

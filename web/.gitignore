@@ -36,3 +36,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Sanity
+.sanity/
+
+# Logs
+logs/
+*.ndjson
+

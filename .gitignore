@@ -28,6 +28,8 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+logs/
+*.ndjson
 
 # Python
 __pycache__/
@@ -46,4 +48,14 @@ ENV/
 # Misc
 .cache/
 .temp/
+
+# Sanity
+.sanity/
+studio-nexi.ai/
+web/.sanity/
+
+# Documentation (setup guides - optional, can be kept)
+# SANITY_*.md
+# CONTENTFUL_*.md
+# CMS_*.md
 

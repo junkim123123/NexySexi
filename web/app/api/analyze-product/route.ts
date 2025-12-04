@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { analyzeProduct } from "@/lib/ai/productAnalysis";
 import { incrementUsage } from "@/lib/usage/limit";
 import { headers } from "next/headers";
+import type { ProductIntake } from '@/lib/types/productIntake';
 import { getComplianceByHtsCode, getComplianceByProductName } from "@/lib/compliance";
 import { getFactoryVettingByCategory } from "@/lib/factoryVetting";
 import { generateRegulationReasoning } from "@/lib/regulation/reasoning";
@@ -46,6 +47,16 @@ export async function POST(req: Request) {
     const contentType = req.headers.get('content-type') || '';
     let input: string;
     let imageBase64: string | undefined = undefined;
+    let onboardingContext: {
+      projectName?: string;
+      mainChannel?: string;
+      mainChannelOtherText?: string;
+      targetMarkets?: string[];
+      targetMarketsOtherText?: string;
+      yearlyVolumePlan?: string;
+      timelinePlan?: string;
+    } | undefined = undefined;
+    let intake: ProductIntake | undefined = undefined;
 
     if (contentType.includes('application/json')) {
       // JSON request (from Conversational Copilot)
@@ -53,6 +64,12 @@ export async function POST(req: Request) {
       input = json.input || json.text || '';
       if (json.image) {
         imageBase64 = json.image;
+      }
+      if (json.onboarding_context) {
+        onboardingContext = json.onboarding_context;
+      }
+      if (json.intake) {
+        intake = json.intake as ProductIntake;
       }
     } else {
       // FormData request (from Quick Scan)
@@ -63,6 +80,26 @@ export async function POST(req: Request) {
       if (imageFile) {
         const buffer = await imageFile.arrayBuffer();
         imageBase64 = Buffer.from(buffer).toString('base64');
+      }
+      
+      // Check for onboarding_context in FormData (as JSON string)
+      const onboardingContextStr = formData.get('onboarding_context') as string | null;
+      if (onboardingContextStr) {
+        try {
+          onboardingContext = JSON.parse(onboardingContextStr);
+        } catch (e) {
+          console.warn('[AnalyzeProduct] Failed to parse onboarding_context from FormData:', e);
+        }
+      }
+
+      // Check for intake in FormData (as JSON string)
+      const intakeStr = formData.get('intake') as string | null;
+      if (intakeStr) {
+        try {
+          intake = JSON.parse(intakeStr) as ProductIntake;
+        } catch (e) {
+          console.warn('[AnalyzeProduct] Failed to parse intake from FormData:', e);
+        }
       }
     }
 
@@ -75,7 +112,7 @@ export async function POST(req: Request) {
 
     console.log("[AnalyzeProduct] Incoming request for:", input.substring(0, 50) + "...");
 
-    const analysis = await analyzeProduct(input, imageBase64);
+    const analysis = await analyzeProduct(input, imageBase64, onboardingContext, intake);
 
     // Try to find category compliance and factory vetting hints
     // First, try by HTS code (more reliable)
@@ -106,21 +143,22 @@ export async function POST(req: Request) {
       );
       testingCostEstimate = estimateTestingCost(complianceHints);
     }
-// Add hints to analysis result
-let analysisWithHints = {
-  ...analysis,
-  ...(complianceHints && { compliance_hints: complianceHints }),
-  ...(factoryVettingHints && { factory_vetting_hints: factoryVettingHints }),
-  ...(regulationReasoning && { regulation_reasoning: regulationReasoning }),
-  ...(testingCostEstimate && { testing_cost_estimate: testingCostEstimate }),
-};
 
-// Estimate initial order cost
-const initialOrderCost = estimateInitialOrderCost(analysisWithHints);
-analysisWithHints = {
-  ...analysisWithHints,
-  initial_order_cost: initialOrderCost,
-};
+    // Add hints to analysis result
+    let analysisWithHints = {
+      ...analysis,
+      ...(complianceHints && { compliance_hints: complianceHints }),
+      ...(factoryVettingHints && { factory_vetting_hints: factoryVettingHints }),
+      ...(regulationReasoning && { regulation_reasoning: regulationReasoning }),
+      ...(testingCostEstimate && { testing_cost_estimate: testingCostEstimate }),
+    };
+
+    // Estimate initial order cost
+    const initialOrderCost = estimateInitialOrderCost(analysisWithHints);
+    analysisWithHints = {
+      ...analysisWithHints,
+      initial_order_cost: initialOrderCost,
+    };
 
     // Log category usage for analytics (fire-and-forget)
     const usageEvent = buildCategoryUsageEvent(input, analysisWithHints, categoryId);

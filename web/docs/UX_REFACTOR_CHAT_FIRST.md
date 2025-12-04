@@ -133,3 +133,23 @@ All analysis requests are logged:
 - All new development should use `/copilot` as primary entry point
 - Analytics logging remains unchanged and works with both flows
 
+## Contract CTA Flow
+
+After a successful analysis, users are presented with a contract CTA card:
+
+- **Component**: `ContractCTACard` (`web/components/copilot/ContractCTACard.tsx`)
+- **Triggers**: Automatically appears after analysis completion in Copilot
+- **Buttons**:
+  - Primary: "Book a sourcing call" → `NEXT_PUBLIC_BOOKING_URL`
+  - Secondary: "Request a full quote and contract" → `NEXT_PUBLIC_CONTRACT_URL` (optional)
+
+If `NEXT_PUBLIC_CONTRACT_URL` is not set, the secondary button is automatically hidden.
+
+## Landing Page Restructure
+
+The landing page now emphasizes Copilot as the primary entry point:
+
+- **Main CTA**: Large "Describe Product with a Conversation" button linking to `/copilot`
+- **Secondary Option**: Quick analyzer input is hidden by default, can be revealed via text link
+- **Component**: Quick analyzer extracted to `QuickAnalyzerInput` component for reuse
+

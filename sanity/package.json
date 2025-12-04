@@ -1,0 +1,19 @@
+{
+  "name": "nexsupply-sanity-studio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@sanity/vision": "^4.20.0",
+    "sanity": "^4.20.0",
+    "styled-components": "^6.1.19"
+  },
+  "devDependencies": {
+    "@sanity/types": "^4.20.0"
+  }
+}
